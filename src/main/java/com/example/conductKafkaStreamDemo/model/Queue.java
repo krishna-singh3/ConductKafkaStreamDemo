@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "queues")
 @Getter
 @Setter
@@ -15,23 +17,42 @@ public class Queue {
   private String name;
   private String description;
   private boolean disabled;
-  private boolean invalidQueue;
-  private boolean deleted;
-  private long createdTime;
-  private User createdBy;
-  private long updatedTime;
-  private User updatedBy;
-  private int version;
-  private long queueNextRunDateTime;
-  private String createdTimeAsString;
-  private String updatedTimeAsString;
-  private long queueLastRunTime;
-  private String queueLastRunTimeStr;
-
+  private List<SupervisedParticipant> supervisedParticipants;
+  private QueryMetadata queryMetadata;
 
   @Setter
   @Getter
-  public static class User {
+  public static class SupervisedParticipant {
+    private Group group;
+  }
+
+  @Setter
+  @Getter
+  public static class Group {
     private String id;
+    private String name;
+  }
+
+  @Setter
+  @Getter
+  public static class QueryMetadata {
+    private int maxItemsPerQuery;
+    private List<Query> queries;
+  }
+
+  @Setter
+  @Getter
+  public static class Query {
+    private QueryDetails query;
+    private boolean enabled;
+    private int docCount;
+  }
+
+  @Setter
+  @Getter
+  public static class QueryDetails {
+    private String id;
+    private String name;
+    private String policyType;
   }
 }
